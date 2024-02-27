@@ -71,7 +71,47 @@ To set up MS Teams notifications, you need to create an Incoming Webhook in MS T
 4. Provide a name and upload an image for your webhook, then click "Create".
 5. Copy the webhook URL provided by Microsoft Teams.
 6. Replace `'YOUR_WEBHOOK_URL'` in the `sendNotification` function in `utils/report/notificationSender.ts` with the webhook URL you got from Microsoft Teams.
+```typescript
+const axios = require('axios');
 
+async function sendSummaryNotification(summary) {
+  const webhookUrl = process.env.TEAMS_WEBHOOK_URL;
+  const message = {
+    "@type": "MessageCard",
+    "@context": "http://schema.org/extensions",
+    "summary": "Test Summary",
+    "sections": [{
+      "activityTitle": "Playwright Tests",
+      "activitySubtitle": "Automated tests",
+      "facts": [{
+        "name": "Total tests",
+        "value": summary.total
+      }, {
+        "name": "Passed tests",
+        "value": summary.passed
+      }, {
+        "name": "Failed tests",
+        "value": summary.failed
+      }]
+    }]
+  };
+
+  try {
+    const response = await axios.post(webhookUrl, message);
+    console.log(`Sent summary message to Teams with response status: ${response.status}`);
+  } catch (error) {
+    console.error(`Failed to send summary message to Teams: ${error}`);
+  }
+}
+
+const summary = {
+  total: 100,
+  passed: 90,
+  failed: 10
+};
+
+sendSummaryNotification(summary);
+```
 Notifications are sent to MS Teams at the end of each test. The notifications include a summary of the test results. This is handled by the [`SummaryReport`](utils/report/summaryReport.ts) class in `utils/report/summaryReport.ts`.
 
 ## Contributing
