@@ -1,0 +1,19 @@
+{
+  "name": "playwright-ms-team-webook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "ready": "rimraf dist node_modules package-lock.json .tmp && npm i"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.41.2",
+    "@reportportal/agent-js-playwright": "~5.1.6",
+    "@types/node": "^20.11.19",
+    "axios": "~1.6.7",
+    "rimraf": "^5.0.5"
+  }
+}
